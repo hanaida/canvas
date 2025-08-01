@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>학교대항전 캔버스</title>
+  <style>
+    body { font-family: sans-serif; text-align: center; }
+    .canvas-wrapper {
+      position: relative;
+      display: inline-block;
+    }
+    canvas { 
+      image-rendering: pixelated; 
+      border: 1px solid #000; 
+      cursor: crosshair; 
+      display: block;
+    }
+    .hex-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+    .hex-cell {
+      position: absolute;
+      font-size: 12px;
+      font-weight: bold;
+      line-height: 1.1;
+      text-align: center;
+      transform: translate(-50%, -50%);
+      color: white;
+      text-shadow: 0 0 2px black;
+    }
+    #fileInput, .modeBtn {
+      font-size: 20px;
+      padding: 10px 20px;
+      margin: 5px;
+      border: 2px solid #333;
+      border-radius: 8px;
+      background-color: #f0f0f0;
+      cursor: pointer;
+    }
+    #fileInput:hover, .modeBtn:hover { background-color: #e0e0e0; }
+    #colorInfo {
+      margin-top: 20px;
+      display: inline-flex;
+      align-items: center;
+      gap: 15px;
+      font-size: 28px;
+      font-weight: bold;
+      background-color: #222;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 12px;
+    }
+    #colorBox {
+      width: 50px;
+      height: 50px;
+      border: 2px solid #000;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+  <h1>학교대항전 캔버스</h1>
+  <input type="file" id="fileInput" accept="image/*"><br><br>
+  <button class="modeBtn" id="mode1Btn">픽셀 클릭 모드</button>
+  <button class="modeBtn" id="mode2Btn">전체 HEX 표시 모드</button><br><br>
+
+  <div class="canvas-wrapper">
+    <canvas id="canvas" width="1024" height="1024"></canvas>
+    <div class="hex-overlay" id="hexOverlay"></div>
+  </div>
+
+  <div id="colorInfo">
+    <span id="colorBox"></span>
+    <span id="colorText">픽셀을 클릭하면 HEX 코드가 표시됩니다.</span>
+  </div>
+
+  <script>
+    const fileInput = document.getElementById('fileInput');
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const hexOverlay = document.getElementById('hexOverlay');
+    const colorBox = document.getElementById('colorBox');
+    const colorText = document.getElementById('colorText');
+    const mode1Btn = document.getElementById('mode1Btn');
+    const mode2Btn = document.getElementById('mode2Btn');
+
+    const size = 32;
+    let pixelData = null;
+    let currentImg = null;
+    let selectedPixel = null;
+    let currentMode = 1;
+    const imgbbApiKey = "3df1cfb7a65e1f0ff0062422dc0b9ab3";
+
+    fileInput.addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const formData = new FormData();
+      formData.append("image", file);
+      fetch(`https://api.imgbb.com/1/upload?key=${imgbbApiKey}`, {
+        method: "POST",
+        body: formData
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) console.log("업로드 URL:", data.data.url);
+      })
+      .catch(err => console.error("업로드 실패:", err));
+
+      const img = new Image();
+      img.src = URL.createObjectURL(file);
+      img.onload = function() {
+        currentImg = img;
+        const tempCanvas = document.createElement('canvas');
+        tempCanvas.width = size;
+        tempCanvas.height = size;
+        const tctx = tempCanvas.getContext('2d');
+        tctx.drawImage(img, 0, 0, size, size);
+        pixelData = tctx.getImageData(0, 0, size, size).data;
+        drawMainCanvas();
+      };
+    });
+
+    function drawMainCanvas() {
+      if (!currentImg || !pixelData) return;
+
+      const tempCanvas = document.createElement('canvas');
+      tempCanvas.width = size;
+      tempCanvas.height = size;
+      const tctx = tempCanvas.getContext('2d');
+      tctx.drawImage(currentImg, 0, 0, size, size);
+
+      ctx.imageSmoothingEnabled = false;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.drawImage(tempCanvas, 0, 0, canvas.width, canvas.height);
+
+      hexOverlay.innerHTML = '';
+
+      if (currentMode === 1 && selectedPixel) {
+        const scale = canvas.width / size;
+        ctx.strokeStyle = "red";
+        ctx.lineWidth = 4;
+        ctx.strokeRect(
+          selectedPixel.x * scale,
+          selectedPixel.y * scale,
+          scale,
+          scale
+        );
+      }
+
+      if (currentMode === 2) {
+        drawAllHexOverlay();
+      }
+    }
+
+    function drawAllHexOverlay() {
+      const scale = canvas.width / size;
+      for (let y = 0; y < size; y++) {
+        for (let x = 0; x < size; x++) {
+          const idx = (y * size + x) * 4;
+          const r = pixelData[idx];
+          const g = pixelData[idx + 1];
+          const b = pixelData[idx + 2];
+          const hex = "#" + [r,g,b].map(v => v.toString(16).padStart(2,"0")).join("").toUpperCase();
+
+          const div = document.createElement('div');
+          div.className = 'hex-cell';
+          div.innerHTML = hex.slice(0, 4) + "<br>" + hex.slice(4);
+
+          div.style.left = `${(x + 0.5) * scale}px`;
+          div.style.top = `${(y + 0.5) * scale}px`;
+
+          const brightness = (r*0.299 + g*0.587 + b*0.114);
+          div.style.color = brightness > 128 ? "black" : "white";
+
+          hexOverlay.appendChild(div);
+        }
+      }
+    }
+
+    canvas.addEventListener('click', function(e) {
+      if (!pixelData || currentMode !== 1) return;
+      const rect = canvas.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const pixelX = Math.floor(x / (canvas.width / size));
+      const pixelY = Math.floor(y / (canvas.height / size));
+      const idx = (pixelY * size + pixelX) * 4;
+      const r = pixelData[idx];
+      const g = pixelData[idx + 1];
+      const b = pixelData[idx + 2];
+      const a = pixelData[idx + 3];
+      const hex = "#" + [r,g,b].map(v => v.toString(16).padStart(2,"0")).join("").toUpperCase();
+      colorBox.style.backgroundColor = hex;
+      colorText.textContent = `(${pixelX}, ${pixelY}) → ${hex} (A=${a})`;
+      selectedPixel = { x: pixelX, y: pixelY };
+      drawMainCanvas();
+    });
+
+    mode1Btn.addEventListener('click', () => {
+      currentMode = 1;
+      colorText.textContent = "픽셀을 클릭하면 HEX 코드가 표시됩니다.";
+      drawMainCanvas();
+    });
+
+    mode2Btn.addEventListener('click', () => {
+      currentMode = 2;
+      colorText.textContent = "전체 HEX 코드 표시 모드";
+      selectedPixel = null;
+      drawMainCanvas();
+    });
+  </script>
+</body>
+</html>
