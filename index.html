@@ -66,8 +66,8 @@
 <body>
   <h1>학교대항전 캔버스</h1>
   <input type="file" id="fileInput" accept="image/*"><br><br>
-  <button class="modeBtn" id="mode1Btn">픽셀 클릭 모드</button>
-  <button class="modeBtn" id="mode2Btn">전체 HEX 표시 모드</button><br><br>
+  <button class="modeBtn" id="mode1Btn">픽셀 모드</button>
+  <button class="modeBtn" id="mode2Btn">HEX 모드</button><br><br>
 
   <div class="canvas-wrapper">
     <canvas id="canvas" width="1024" height="1024"></canvas>
@@ -210,7 +210,7 @@
 
     mode2Btn.addEventListener('click', () => {
       currentMode = 2;
-      colorText.textContent = "전체 HEX 코드 표시 모드";
+      colorText.textContent = "HEX 모드";
       selectedPixel = null;
       drawMainCanvas();
     });
