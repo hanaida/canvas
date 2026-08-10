@@ -2,94 +2,211 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>학교대항전 캔버스</title>
 
   <style>
     body {
       font-family: sans-serif;
       text-align: center;
+      margin: 0;
+      padding: 10px;
     }
 
     .canvas-wrapper {
       position: relative;
       display: inline-block;
+      max-width: 100%;
     }
 
     canvas {
       image-rendering: pixelated;
       border: 1px solid #000;
-      cursor: crosshair;
+      cursor: pointer;
       display: block;
+
+      width: 1024px;
+      height: 1024px;
+
+      max-width: 100%;
     }
 
     .hex-overlay {
       position: absolute;
+
       top: 0;
       left: 0;
+
       width: 100%;
       height: 100%;
-      pointer-events: auto;
+
+      /*
+      중요:
+      HEX 글자가 클릭을 가로채지 않음.
+      모든 클릭은 canvas가 처리함.
+      */
+      pointer-events: none;
     }
 
     .hex-cell {
       position: absolute;
+
       font-size: 12px;
       font-weight: bold;
       line-height: 1.1;
+
       text-align: center;
-      transform: translate(-50%, -50%);
+
+      transform: translate(
+        -50%,
+        -50%
+      );
+
       color: white;
-      text-shadow: 0 0 2px black;
-      cursor: pointer;
+
+      text-shadow:
+        0 0 2px black;
+
       user-select: none;
     }
 
     #fileInput,
     .modeBtn {
       font-size: 20px;
-      padding: 10px 20px;
+
+      padding:
+        10px
+        20px;
+
       margin: 5px;
-      border: 2px solid #333;
-      border-radius: 8px;
-      background-color: #f0f0f0;
-      cursor: pointer;
+
+      border:
+        2px
+        solid
+        #333;
+
+      border-radius:
+        8px;
+
+      background-color:
+        #f0f0f0;
+
+      cursor:
+        pointer;
     }
 
     #fileInput:hover,
     .modeBtn:hover {
-      background-color: #e0e0e0;
+      background-color:
+        #e0e0e0;
     }
 
     .modeBtn.active {
-      background-color: #333;
-      color: white;
+      background-color:
+        #333;
+
+      color:
+        white;
     }
 
     #colorInfo {
-      margin-top: 20px;
-      display: inline-flex;
-      align-items: center;
-      gap: 15px;
-      font-size: 28px;
-      font-weight: bold;
-      background-color: #222;
-      color: white;
-      padding: 10px 20px;
-      border-radius: 12px;
+      margin-top:
+        20px;
+
+      display:
+        inline-flex;
+
+      align-items:
+        center;
+
+      gap:
+        15px;
+
+      font-size:
+        28px;
+
+      font-weight:
+        bold;
+
+      background-color:
+        #222;
+
+      color:
+        white;
+
+      padding:
+        10px
+        20px;
+
+      border-radius:
+        12px;
+
+      max-width:
+        calc(100% - 20px);
+
+      box-sizing:
+        border-box;
     }
 
     #colorBox {
-      width: 50px;
-      height: 50px;
-      border: 2px solid #000;
-      border-radius: 8px;
+      width:
+        50px;
+
+      height:
+        50px;
+
+      min-width:
+        50px;
+
+      border:
+        2px
+        solid
+        #000;
+
+      border-radius:
+        8px;
+    }
+
+    @media (
+      max-width: 600px
+    ) {
+
+      #colorInfo {
+        font-size:
+          17px;
+
+        gap:
+          10px;
+      }
+
+      #colorBox {
+        width:
+          36px;
+
+        height:
+          36px;
+
+        min-width:
+          36px;
+      }
+
+      #fileInput,
+      .modeBtn {
+        font-size:
+          16px;
+      }
+
     }
   </style>
 </head>
 
 <body>
 
-  <h1>학교대항전 캔버스</h1>
+  <h1>
+    학교대항전 캔버스
+  </h1>
+
 
   <input
     type="file"
@@ -97,25 +214,40 @@
     accept="image/*"
   >
 
+
   <br><br>
 
-  <button class="modeBtn active" id="mode1Btn">
+
+  <button
+    class="modeBtn active"
+    id="mode1Btn"
+  >
     픽셀 모드
   </button>
 
-  <button class="modeBtn" id="mode2Btn">
+
+  <button
+    class="modeBtn"
+    id="mode2Btn"
+  >
     HEX 모드
   </button>
 
+
   <br><br>
 
-  <div class="canvas-wrapper">
+
+  <div
+    class="canvas-wrapper"
+    id="canvasWrapper"
+  >
 
     <canvas
       id="canvas"
       width="1024"
       height="1024"
     ></canvas>
+
 
     <div
       class="hex-overlay"
@@ -124,52 +256,119 @@
 
   </div>
 
+
   <br>
 
-  <div id="colorInfo">
 
-    <span id="colorBox"></span>
+  <div
+    id="colorInfo"
+  >
 
-    <span id="colorText">
+    <span
+      id="colorBox"
+    ></span>
+
+
+    <span
+      id="colorText"
+    >
       픽셀을 클릭하면 해당 픽셀의 색상코드가 클립보드에 복사됩니다.
     </span>
 
   </div>
 
+
   <script>
 
+    /*
+    ==========================
+    HTML 요소
+    ==========================
+    */
+
     const fileInput =
-      document.getElementById("fileInput");
+      document.getElementById(
+        "fileInput"
+      );
+
 
     const canvas =
-      document.getElementById("canvas");
+      document.getElementById(
+        "canvas"
+      );
+
 
     const ctx =
-      canvas.getContext("2d");
+      canvas.getContext(
+        "2d"
+      );
+
+
+    const canvasWrapper =
+      document.getElementById(
+        "canvasWrapper"
+      );
+
 
     const hexOverlay =
-      document.getElementById("hexOverlay");
+      document.getElementById(
+        "hexOverlay"
+      );
+
 
     const colorBox =
-      document.getElementById("colorBox");
+      document.getElementById(
+        "colorBox"
+      );
+
 
     const colorText =
-      document.getElementById("colorText");
+      document.getElementById(
+        "colorText"
+      );
+
 
     const mode1Btn =
-      document.getElementById("mode1Btn");
+      document.getElementById(
+        "mode1Btn"
+      );
+
 
     const mode2Btn =
-      document.getElementById("mode2Btn");
+      document.getElementById(
+        "mode2Btn"
+      );
 
 
-    const size = 32;
+    /*
+    ==========================
+    기본 설정
+    ==========================
+    */
 
-    let pixelData = null;
-    let currentImg = null;
-    let selectedPixel = null;
-    let currentMode = 1;
+    const size =
+      32;
 
+
+    let pixelData =
+      null;
+
+
+    let currentImg =
+      null;
+
+
+    let selectedPixel =
+      null;
+
+
+    let currentMode =
+      1;
+
+
+    /*
+    ImgBB API 키
+    */
 
     const imgbbApiKey =
       "3df1cfb7a65e1f0ff0062422dc0b9ab3";
@@ -213,19 +412,25 @@
         fetch(
           `https://api.imgbb.com/1/upload?key=${imgbbApiKey}`,
           {
-            method: "POST",
-            body: formData
+            method:
+              "POST",
+
+            body:
+              formData
           }
         )
 
         .then(
-          res => res.json()
+          res =>
+            res.json()
         )
 
         .then(
           data => {
 
-            if (data.success) {
+            if (
+              data.success
+            ) {
 
               console.log(
                 "업로드 URL:",
@@ -251,7 +456,7 @@
 
         /*
         ==========================
-        이미지 불러오기
+        로컬 이미지 불러오기
         ==========================
         */
 
@@ -260,72 +465,87 @@
 
 
         const objectUrl =
-          URL.createObjectURL(file);
+          URL.createObjectURL(
+            file
+          );
 
 
         img.src =
           objectUrl;
 
 
-        img.onload = function() {
-
-          currentImg =
-            img;
+        img.onload =
+          function() {
 
 
-          const tempCanvas =
-            document.createElement(
-              "canvas"
-            );
+            currentImg =
+              img;
 
 
-          tempCanvas.width =
-            size;
+            /*
+            ==========================
+            32 x 32로 변환
+            ==========================
+            */
 
-          tempCanvas.height =
-            size;
-
-
-          const tctx =
-            tempCanvas.getContext(
-              "2d"
-            );
-
-
-          tctx.imageSmoothingEnabled =
-            false;
+            const tempCanvas =
+              document.createElement(
+                "canvas"
+              );
 
 
-          tctx.drawImage(
-            img,
-            0,
-            0,
-            size,
-            size
-          );
+            tempCanvas.width =
+              size;
 
 
-          pixelData =
-            tctx.getImageData(
+            tempCanvas.height =
+              size;
+
+
+            const tctx =
+              tempCanvas.getContext(
+                "2d"
+              );
+
+
+            tctx.imageSmoothingEnabled =
+              false;
+
+
+            tctx.drawImage(
+              img,
               0,
               0,
               size,
               size
-            ).data;
+            );
 
 
-          selectedPixel =
-            null;
+            /*
+            실제 32 x 32 픽셀 데이터 저장
+            */
+
+            pixelData =
+              tctx.getImageData(
+                0,
+                0,
+                size,
+                size
+              ).data;
 
 
-          drawMainCanvas();
+            selectedPixel =
+              null;
 
 
-          URL.revokeObjectURL(
-            objectUrl
-          );
+            drawMainCanvas();
 
-        };
+
+            URL.revokeObjectURL(
+              objectUrl
+            );
+
+          };
 
       }
     );
@@ -375,17 +595,125 @@
       text
     ) {
 
-      try {
+      /*
+      ==========================
+      최신 Clipboard API
+      ==========================
+      */
 
-        await navigator.clipboard.writeText(
-          text
-        );
+      if (
+        navigator.clipboard &&
+        window.isSecureContext
+      ) {
 
-        return true;
+        try {
+
+          await navigator.clipboard.writeText(
+            text
+          );
+
+
+          return true;
+
+        }
+
+        catch (
+          error
+        ) {
+
+          console.warn(
+            "Clipboard API 실패. 대체 방식 사용.",
+            error
+          );
+
+        }
 
       }
 
-      catch (error) {
+
+      /*
+      ==========================
+      대체 복사 방식
+      ==========================
+      */
+
+      try {
+
+        const textarea =
+          document.createElement(
+            "textarea"
+          );
+
+
+        textarea.value =
+          text;
+
+
+        textarea.setAttribute(
+          "readonly",
+          ""
+        );
+
+
+        textarea.style.position =
+          "fixed";
+
+
+        textarea.style.left =
+          "0";
+
+
+        textarea.style.top =
+          "0";
+
+
+        textarea.style.width =
+          "1px";
+
+
+        textarea.style.height =
+          "1px";
+
+
+        textarea.style.opacity =
+          "0";
+
+
+        document.body.appendChild(
+          textarea
+        );
+
+
+        textarea.focus();
+
+
+        textarea.select();
+
+
+        textarea.setSelectionRange(
+          0,
+          text.length
+        );
+
+
+        const success =
+          document.execCommand(
+            "copy"
+          );
+
+
+        document.body.removeChild(
+          textarea
+        );
+
+
+        return success;
+
+      }
+
+      catch (
+        error
+      ) {
 
         console.error(
           "클립보드 복사 실패:",
@@ -393,70 +721,7 @@
         );
 
 
-        /*
-        대체 복사 방식
-        */
-
-        try {
-
-          const textarea =
-            document.createElement(
-              "textarea"
-            );
-
-
-          textarea.value =
-            text;
-
-
-          textarea.style.position =
-            "fixed";
-
-          textarea.style.left =
-            "-9999px";
-
-          textarea.style.top =
-            "-9999px";
-
-
-          document.body.appendChild(
-            textarea
-          );
-
-
-          textarea.focus();
-
-          textarea.select();
-
-
-          const success =
-            document.execCommand(
-              "copy"
-            );
-
-
-          document.body.removeChild(
-            textarea
-          );
-
-
-          return success;
-
-        }
-
-        catch (
-          fallbackError
-        ) {
-
-          console.error(
-            "대체 복사 실패:",
-            fallbackError
-          );
-
-
-          return false;
-
-        }
+        return false;
 
       }
 
@@ -475,9 +740,15 @@
         !currentImg ||
         !pixelData
       ) {
+
         return;
+
       }
 
+
+      /*
+      32 x 32 임시 캔버스
+      */
 
       const tempCanvas =
         document.createElement(
@@ -487,6 +758,7 @@
 
       tempCanvas.width =
         size;
+
 
       tempCanvas.height =
         size;
@@ -511,6 +783,10 @@
       );
 
 
+      /*
+      메인 캔버스에 확대 표시
+      */
+
       ctx.imageSmoothingEnabled =
         false;
 
@@ -532,6 +808,10 @@
       );
 
 
+      /*
+      HEX 글자 초기화
+      */
+
       hexOverlay.innerHTML =
         "";
 
@@ -547,8 +827,13 @@
         selectedPixel
       ) {
 
-        const scale =
+        const scaleX =
           canvas.width /
+          size;
+
+
+        const scaleY =
+          canvas.height /
           size;
 
 
@@ -561,10 +846,17 @@
 
 
         ctx.strokeRect(
-          selectedPixel.x * scale,
-          selectedPixel.y * scale,
-          scale,
-          scale
+
+          selectedPixel.x *
+          scaleX,
+
+          selectedPixel.y *
+          scaleY,
+
+          scaleX,
+
+          scaleY
+
         );
 
       }
@@ -589,14 +881,44 @@
 
     /*
     ==========================
-    HEX 코드 전체 표시
+    HEX 코드 화면 표시
     ==========================
     */
 
     function drawAllHexOverlay() {
 
-      const scale =
-        canvas.width /
+      if (
+        !pixelData
+      ) {
+
+        return;
+
+      }
+
+
+      /*
+      오버레이 실제 표시 크기 기준
+      */
+
+      const wrapperRect =
+        canvasWrapper.getBoundingClientRect();
+
+
+      const displayWidth =
+        wrapperRect.width;
+
+
+      const displayHeight =
+        wrapperRect.height;
+
+
+      const cellWidth =
+        displayWidth /
+        size;
+
+
+      const cellHeight =
+        displayHeight /
         size;
 
 
@@ -621,13 +943,21 @@
 
 
           const r =
-            pixelData[idx];
+            pixelData[
+              idx
+            ];
+
 
           const g =
-            pixelData[idx + 1];
+            pixelData[
+              idx + 1
+            ];
+
 
           const b =
-            pixelData[idx + 2];
+            pixelData[
+              idx + 2
+            ];
 
 
           const hex =
@@ -638,9 +968,9 @@
             );
 
 
-          const codeWithoutHash =
-            hex.substring(1);
-
+          /*
+          HEX 글자 요소 생성
+          */
 
           const div =
             document.createElement(
@@ -652,30 +982,31 @@
             "hex-cell";
 
 
-          /*
-          화면에는 # 포함 표시
-          */
-
           div.innerHTML =
-            hex.slice(0, 4) +
+            hex.slice(
+              0,
+              4
+            ) +
             "<br>" +
-            hex.slice(4);
+            hex.slice(
+              4
+            );
 
 
           div.style.left =
-            `${(x + 0.5) * scale}px`;
+            `${(x + 0.5) * cellWidth}px`;
 
 
           div.style.top =
-            `${(y + 0.5) * scale}px`;
+            `${(y + 0.5) * cellHeight}px`;
 
 
           div.style.width =
-            `${scale}px`;
+            `${cellWidth}px`;
 
 
           div.style.height =
-            `${scale}px`;
+            `${cellHeight}px`;
 
 
           div.style.display =
@@ -694,6 +1025,28 @@
             "border-box";
 
 
+          /*
+          화면 크기에 따라 글씨 크기 조절
+          */
+
+          const fontSize =
+            Math.max(
+              5,
+              Math.min(
+                12,
+                cellWidth * 0.38
+              )
+            );
+
+
+          div.style.fontSize =
+            `${fontSize}px`;
+
+
+          /*
+          밝기에 따라 글자색 결정
+          */
+
           const brightness =
             (
               r * 0.299 +
@@ -706,59 +1059,6 @@
             brightness > 128
               ? "black"
               : "white";
-
-
-          /*
-          ==========================
-          HEX 모드 클릭
-          ==========================
-          */
-
-          div.addEventListener(
-            "click",
-            async function(e) {
-
-              e.stopPropagation();
-
-
-              const copied =
-                await copyToClipboard(
-                  codeWithoutHash
-                );
-
-
-              colorBox.style.backgroundColor =
-                hex;
-
-
-              /*
-              좌표는 1 ~ 32 기준
-              */
-
-              const displayX =
-                x + 1;
-
-
-              const displayY =
-                y + 1;
-
-
-              if (copied) {
-
-                colorText.textContent =
-                  `(${displayX}, ${displayY}) → ${codeWithoutHash} 복사 완료!`;
-
-              }
-
-              else {
-
-                colorText.textContent =
-                  `(${displayX}, ${displayY}) → 복사 실패`;
-
-              }
-
-            }
-          );
 
 
           hexOverlay.appendChild(
@@ -774,7 +1074,165 @@
 
     /*
     ==========================
-    픽셀 모드 클릭
+    공통 픽셀 복사 함수
+    ==========================
+    */
+
+    async function copyPixel(
+      pixelX,
+      pixelY
+    ) {
+
+      if (
+        !pixelData
+      ) {
+
+        return;
+
+      }
+
+
+      /*
+      안전 검사
+      */
+
+      if (
+        pixelX < 0 ||
+        pixelX >= size ||
+        pixelY < 0 ||
+        pixelY >= size
+      ) {
+
+        return;
+
+      }
+
+
+      const idx =
+        (
+          pixelY *
+          size +
+          pixelX
+        ) * 4;
+
+
+      const r =
+        pixelData[
+          idx
+        ];
+
+
+      const g =
+        pixelData[
+          idx + 1
+        ];
+
+
+      const b =
+        pixelData[
+          idx + 2
+        ];
+
+
+      const hex =
+        rgbToHex(
+          r,
+          g,
+          b
+        );
+
+
+      /*
+      # 제거
+      */
+
+      const codeWithoutHash =
+        hex.substring(
+          1
+        );
+
+
+      /*
+      ==========================
+      클립보드 복사
+      ==========================
+      */
+
+      const copied =
+        await copyToClipboard(
+          codeWithoutHash
+        );
+
+
+      /*
+      색상 박스
+      */
+
+      colorBox.style.backgroundColor =
+        hex;
+
+
+      /*
+      픽셀 모드에서는
+      빨간 선택 테두리 표시
+      */
+
+      if (
+        currentMode === 1
+      ) {
+
+        selectedPixel = {
+          x:
+            pixelX,
+
+          y:
+            pixelY
+        };
+
+
+        drawMainCanvas();
+
+      }
+
+
+      /*
+      화면 표시 좌표는
+      1 ~ 32
+      */
+
+      const displayX =
+        pixelX + 1;
+
+
+      const displayY =
+        pixelY + 1;
+
+
+      if (
+        copied
+      ) {
+
+        colorText.textContent =
+          `(${displayX}, ${displayY}) → ${codeWithoutHash} 복사 완료!`;
+
+      }
+
+      else {
+
+        colorText.textContent =
+          `(${displayX}, ${displayY}) → 복사 실패`;
+
+      }
+
+    }
+
+
+    /*
+    ==========================
+    캔버스 클릭
+    ==========================
+    픽셀 모드 / HEX 모드
+    둘 다 여기서 처리
     ==========================
     */
 
@@ -783,167 +1241,70 @@
       async function(e) {
 
         if (
-          !pixelData ||
-          currentMode !== 1
+          !pixelData
         ) {
+
           return;
+
         }
 
+
+        /*
+        현재 화면에 표시된
+        canvas 크기
+        */
 
         const rect =
           canvas.getBoundingClientRect();
 
 
-        const scaleX =
-          canvas.width /
-          rect.width;
+        /*
+        클릭 위치를
+        0 ~ 1 비율로 계산
+        */
 
-
-        const scaleY =
-          canvas.height /
-          rect.height;
-
-
-        const mouseX =
+        const relativeX =
           (
             e.clientX -
             rect.left
-          ) * scaleX;
+          ) /
+          rect.width;
 
 
-        const mouseY =
+        const relativeY =
           (
             e.clientY -
             rect.top
-          ) * scaleY;
+          ) /
+          rect.height;
 
+
+        /*
+        32 x 32 좌표로 변환
+        */
 
         const pixelX =
           Math.floor(
-            mouseX /
-            (
-              canvas.width /
-              size
-            )
+            relativeX *
+            size
           );
 
 
         const pixelY =
           Math.floor(
-            mouseY /
-            (
-              canvas.height /
-              size
-            )
-          );
-
-
-        if (
-          pixelX < 0 ||
-          pixelX >= size ||
-          pixelY < 0 ||
-          pixelY >= size
-        ) {
-          return;
-        }
-
-
-        const idx =
-          (
-            pixelY *
-            size +
-            pixelX
-          ) * 4;
-
-
-        const r =
-          pixelData[idx];
-
-        const g =
-          pixelData[idx + 1];
-
-        const b =
-          pixelData[idx + 2];
-
-
-        const hex =
-          rgbToHex(
-            r,
-            g,
-            b
+            relativeY *
+            size
           );
 
 
         /*
-        # 제거
+        공통 복사 함수 실행
         */
 
-        const codeWithoutHash =
-          hex.substring(1);
-
-
-        /*
-        클립보드 복사
-        */
-
-        const copied =
-          await copyToClipboard(
-            codeWithoutHash
-          );
-
-
-        /*
-        색상 박스
-        */
-
-        colorBox.style.backgroundColor =
-          hex;
-
-
-        /*
-        선택 픽셀 저장
-        내부 좌표는 0 ~ 31 유지
-        */
-
-        selectedPixel = {
-          x: pixelX,
-          y: pixelY
-        };
-
-
-        /*
-        선택 테두리 그리기
-        */
-
-        drawMainCanvas();
-
-
-        /*
-        화면에 표시할 좌표는
-        1 ~ 32
-        */
-
-        const displayX =
-          pixelX + 1;
-
-
-        const displayY =
-          pixelY + 1;
-
-
-        if (copied) {
-
-          colorText.textContent =
-            `(${displayX}, ${displayY}) → ${codeWithoutHash} 복사 완료!`;
-
-        }
-
-        else {
-
-          colorText.textContent =
-            `(${displayX}, ${displayY}) → 복사 실패`;
-
-        }
+        await copyPixel(
+          pixelX,
+          pixelY
+        );
 
       }
     );
@@ -951,7 +1312,29 @@
 
     /*
     ==========================
-    모드 버튼 상태
+    터치 환경 보조
+    ==========================
+    */
+
+    canvas.addEventListener(
+      "touchstart",
+      function() {
+        /*
+        모바일에서 canvas가
+        정상적인 터치 대상임을 명확하게 함.
+        실제 복사는 click 이벤트에서 수행.
+        */
+      },
+      {
+        passive:
+          true
+      }
+    );
+
+
+    /*
+    ==========================
+    모드 버튼 표시
     ==========================
     */
 
@@ -999,19 +1382,10 @@
 
     mode1Btn.addEventListener(
       "click",
-      () => {
+      function() {
 
         currentMode =
           1;
-
-
-        /*
-        HEX 오버레이가
-        클릭을 막지 않도록 함
-        */
-
-        hexOverlay.style.pointerEvents =
-          "none";
 
 
         colorText.textContent =
@@ -1035,7 +1409,7 @@
 
     mode2Btn.addEventListener(
       "click",
-      () => {
+      function() {
 
         currentMode =
           2;
@@ -1043,14 +1417,6 @@
 
         selectedPixel =
           null;
-
-
-        /*
-        HEX 셀 클릭 활성화
-        */
-
-        hexOverlay.style.pointerEvents =
-          "auto";
 
 
         colorText.textContent =
@@ -1068,13 +1434,34 @@
 
     /*
     ==========================
-    최초 상태
+    창 크기 변경
+    ==========================
+    HEX 글자 위치 다시 계산
     ==========================
     */
 
-    hexOverlay.style.pointerEvents =
-      "none";
+    window.addEventListener(
+      "resize",
+      function() {
 
+        if (
+          currentMode === 2 &&
+          pixelData
+        ) {
+
+          drawMainCanvas();
+
+        }
+
+      }
+    );
+
+
+    /*
+    ==========================
+    최초 상태
+    ==========================
+    */
 
     updateModeButtons();
 
