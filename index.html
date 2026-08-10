@@ -136,7 +136,6 @@
 
   </div>
 
-
   <script>
 
     const fileInput =
@@ -252,7 +251,7 @@
 
         /*
         ==========================
-        로컬 이미지 불러오기
+        이미지 불러오기
         ==========================
         */
 
@@ -382,7 +381,6 @@
           text
         );
 
-
         return true;
 
       }
@@ -396,8 +394,7 @@
 
 
         /*
-        구형 브라우저 또는
-        Clipboard API 사용 불가 환경 대응
+        대체 복사 방식
         */
 
         try {
@@ -541,7 +538,7 @@
 
       /*
       ==========================
-      픽셀 모드 선택 표시
+      픽셀 모드 선택 테두리
       ==========================
       */
 
@@ -656,7 +653,7 @@
 
 
           /*
-          화면에는 # 포함해서 표시
+          화면에는 # 포함 표시
           */
 
           div.innerHTML =
@@ -680,11 +677,6 @@
           div.style.height =
             `${scale}px`;
 
-
-          /*
-          픽셀 전체 영역을
-          클릭 가능하게 설정
-          */
 
           div.style.display =
             "flex";
@@ -718,7 +710,7 @@
 
           /*
           ==========================
-          HEX 모드 픽셀 클릭
+          HEX 모드 클릭
           ==========================
           */
 
@@ -739,17 +731,29 @@
                 hex;
 
 
+              /*
+              좌표는 1 ~ 32 기준
+              */
+
+              const displayX =
+                x + 1;
+
+
+              const displayY =
+                y + 1;
+
+
               if (copied) {
 
                 colorText.textContent =
-                  `(${x}, ${y}) → ${hex} · ${codeWithoutHash} 복사 완료!`;
+                  `(${displayX}, ${displayY}) → ${codeWithoutHash} 복사 완료!`;
 
               }
 
               else {
 
                 colorText.textContent =
-                  `(${x}, ${y}) → ${hex} · 복사 실패`;
+                  `(${displayX}, ${displayY}) → 복사 실패`;
 
               }
 
@@ -789,11 +793,6 @@
         const rect =
           canvas.getBoundingClientRect();
 
-
-        /*
-        CSS에서 캔버스 크기가
-        변해도 좌표가 맞도록 보정
-        */
 
         const scaleX =
           canvas.width /
@@ -839,10 +838,6 @@
           );
 
 
-        /*
-        캔버스 바깥 방지
-        */
-
         if (
           pixelX < 0 ||
           pixelX >= size ||
@@ -869,9 +864,6 @@
 
         const b =
           pixelData[idx + 2];
-
-        const a =
-          pixelData[idx + 3];
 
 
         const hex =
@@ -901,7 +893,7 @@
 
 
         /*
-        색상 미리보기
+        색상 박스
         */
 
         colorBox.style.backgroundColor =
@@ -910,6 +902,7 @@
 
         /*
         선택 픽셀 저장
+        내부 좌표는 0 ~ 31 유지
         */
 
         selectedPixel = {
@@ -919,27 +912,36 @@
 
 
         /*
-        빨간 테두리 다시 그리기
+        선택 테두리 그리기
         */
 
         drawMainCanvas();
 
 
         /*
-        결과 표시
+        화면에 표시할 좌표는
+        1 ~ 32
         */
+
+        const displayX =
+          pixelX + 1;
+
+
+        const displayY =
+          pixelY + 1;
+
 
         if (copied) {
 
           colorText.textContent =
-            `(${pixelX}, ${pixelY}) → ${hex} (A=${a}) · ${codeWithoutHash} 복사 완료!`;
+            `(${displayX}, ${displayY}) → ${codeWithoutHash} 복사 완료!`;
 
         }
 
         else {
 
           colorText.textContent =
-            `(${pixelX}, ${pixelY}) → ${hex} (A=${a}) · 복사 실패`;
+            `(${displayX}, ${displayY}) → 복사 실패`;
 
         }
 
@@ -1004,7 +1006,8 @@
 
 
         /*
-        클릭이 canvas로 전달되도록
+        HEX 오버레이가
+        클릭을 막지 않도록 함
         */
 
         hexOverlay.style.pointerEvents =
