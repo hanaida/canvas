@@ -2,6 +2,7 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
+
   <meta
     name="viewport"
     content="width=device-width, initial-scale=1.0"
@@ -16,6 +17,7 @@
 
     :root {
       --bg: #0D1117;
+
       --panel: #161B22;
       --panel-2: #1C2128;
       --panel-3: #22272E;
@@ -31,14 +33,10 @@
 
       --success: #3FB950;
       --danger: #F85149;
-
-      --radius: 14px;
     }
-
 
     body {
       margin: 0;
-
       min-height: 100vh;
 
       font-family:
@@ -58,13 +56,6 @@
       color: var(--text);
     }
 
-
-    /*
-    ==========================
-    전체 페이지
-    ==========================
-    */
-
     .app {
       width: min(
         1120px,
@@ -79,12 +70,9 @@
         60px;
     }
 
-
-    /*
-    ==========================
-    상단 제목
-    ==========================
-    */
+    /* =========================
+       상단 제목
+       ========================= */
 
     .header {
       display: flex;
@@ -96,27 +84,22 @@
       margin-bottom: 24px;
     }
 
-
     .header-title h1 {
       margin: 0;
 
       font-size: 30px;
       font-weight: 800;
+
       letter-spacing: -1px;
     }
 
-
     .header-title p {
-      margin:
-        7px
-        0
-        0;
+      margin: 7px 0 0;
 
       color: var(--text-sub);
 
       font-size: 14px;
     }
-
 
     .size-badge {
       display: inline-flex;
@@ -124,9 +107,7 @@
       align-items: center;
       justify-content: center;
 
-      padding:
-        7px
-        11px;
+      padding: 7px 11px;
 
       border:
         1px solid
@@ -150,12 +131,9 @@
       white-space: nowrap;
     }
 
-
-    /*
-    ==========================
-    툴바
-    ==========================
-    */
+    /* =========================
+       상단 툴바
+       ========================= */
 
     .toolbar {
       display: flex;
@@ -173,8 +151,7 @@
         1px solid
         var(--border);
 
-      border-radius:
-        var(--radius);
+      border-radius: 14px;
 
       background:
         rgba(
@@ -188,9 +165,7 @@
         blur(14px);
 
       box-shadow:
-        0
-        12px
-        40px
+        0 12px 40px
         rgba(
           0,
           0,
@@ -199,9 +174,7 @@
         );
     }
 
-
-    .toolbar-left,
-    .toolbar-right {
+    .toolbar-left {
       display: flex;
 
       align-items: center;
@@ -209,17 +182,13 @@
       gap: 10px;
     }
 
-
-    /*
-    ==========================
-    파일 선택
-    ==========================
-    */
+    /* =========================
+       이미지 선택
+       ========================= */
 
     #fileInput {
       display: none;
     }
-
 
     .upload-button {
       display: inline-flex;
@@ -244,8 +213,7 @@
       background:
         var(--panel-3);
 
-      color:
-        var(--text);
+      color: var(--text);
 
       font-size: 14px;
       font-weight: 700;
@@ -258,31 +226,23 @@
         transform 0.15s ease;
     }
 
-
     .upload-button:hover {
       background: #2D333B;
 
-      border-color:
-        #6E7681;
+      border-color: #6E7681;
     }
-
 
     .upload-button:active {
-      transform:
-        scale(0.98);
+      transform: scale(0.98);
     }
-
 
     .upload-icon {
       font-size: 18px;
     }
 
-
-    /*
-    ==========================
-    업로드 상태
-    ==========================
-    */
+    /* =========================
+       ImgBB 상태
+       ========================= */
 
     #uploadStatus {
       display: inline-flex;
@@ -291,118 +251,31 @@
 
       gap: 6px;
 
-      color:
-        var(--text-sub);
+      color: var(--text-sub);
 
       font-size: 13px;
 
       white-space: nowrap;
     }
 
-
     #uploadStatus.success {
-      color:
-        var(--success);
+      color: var(--success);
     }
-
 
     #uploadStatus.error {
-      color:
-        var(--danger);
+      color: var(--danger);
     }
 
-
-    /*
-    ==========================
-    모드 선택
-    ==========================
-    */
-
-    .mode-switch {
-      display: flex;
-
-      gap: 4px;
-
-      padding: 4px;
-
-      border:
-        1px solid
-        var(--border);
-
-      border-radius: 11px;
-
-      background:
-        #0D1117;
-    }
-
-
-    .modeBtn {
-      min-height: 36px;
-
-      padding:
-        0
-        15px;
-
-      border: none;
-
-      border-radius: 8px;
-
-      background:
-        transparent;
-
-      color:
-        var(--text-sub);
-
-      font-size: 13px;
-      font-weight: 700;
-
-      cursor: pointer;
-
-      transition:
-        background 0.15s ease,
-        color 0.15s ease;
-    }
-
-
-    .modeBtn:hover {
-      color:
-        var(--text);
-    }
-
-
-    .modeBtn.active {
-      background:
-        var(--panel-3);
-
-      color:
-        var(--text);
-
-      box-shadow:
-        0
-        2px
-        6px
-        rgba(
-          0,
-          0,
-          0,
-          0.35
-        );
-    }
-
-
-    /*
-    ==========================
-    메인 작업 영역
-    ==========================
-    */
+    /* =========================
+       작업 공간
+       ========================= */
 
     .workspace {
       border:
         1px solid
         var(--border);
 
-      border-radius:
-        18px;
+      border-radius: 18px;
 
       background:
         rgba(
@@ -415,9 +288,7 @@
       overflow: hidden;
 
       box-shadow:
-        0
-        20px
-        70px
+        0 20px 70px
         rgba(
           0,
           0,
@@ -426,12 +297,9 @@
         );
     }
 
-
-    /*
-    ==========================
-    작업 영역 상단
-    ==========================
-    */
+    /* =========================
+       작업 공간 헤더
+       ========================= */
 
     .workspace-header {
       display: flex;
@@ -460,7 +328,6 @@
         );
     }
 
-
     .workspace-title {
       display: flex;
 
@@ -468,28 +335,23 @@
 
       gap: 9px;
 
-      color:
-        var(--text-sub);
+      color: var(--text-sub);
 
       font-size: 13px;
       font-weight: 700;
     }
 
-
     .status-dot {
       width: 8px;
       height: 8px;
 
-      border-radius:
-        50%;
+      border-radius: 50%;
 
       background:
         var(--success);
 
       box-shadow:
-        0
-        0
-        10px
+        0 0 10px
         rgba(
           63,
           185,
@@ -498,11 +360,8 @@
         );
     }
 
-
-    #modeLabel {
-      padding:
-        5px
-        9px;
+    .pixel-badge {
+      padding: 5px 9px;
 
       border:
         1px solid
@@ -520,12 +379,9 @@
       font-weight: 800;
     }
 
-
-    /*
-    ==========================
-    캔버스 영역
-    ==========================
-    */
+    /* =========================
+       캔버스 영역
+       ========================= */
 
     .canvas-area {
       display: flex;
@@ -533,8 +389,7 @@
       align-items: center;
       justify-content: center;
 
-      padding:
-        26px;
+      padding: 26px;
 
       overflow: auto;
 
@@ -559,7 +414,6 @@
         18px;
     }
 
-
     .canvas-wrapper {
       position: relative;
 
@@ -571,8 +425,7 @@
         1px solid
         #4B5563;
 
-      border-radius:
-        7px;
+      border-radius: 7px;
 
       overflow: hidden;
 
@@ -580,9 +433,7 @@
         #FFFFFF;
 
       box-shadow:
-        0
-        18px
-        50px
+        0 18px 50px
         rgba(
           0,
           0,
@@ -590,7 +441,6 @@
           0.5
         );
     }
-
 
     canvas {
       display: block;
@@ -616,65 +466,105 @@
         manipulation;
     }
 
+    /* =========================
+       이전 / 다음 버튼
+       ========================= */
 
-    /*
-    ==========================
-    HEX 오버레이
-    ==========================
-    */
-
-    .hex-overlay {
-      position: absolute;
-
-      inset: 0;
-
-      width: 100%;
-      height: 100%;
-
-      pointer-events: none;
-    }
-
-
-    .hex-cell {
-      position: absolute;
-
+    .navigation-bar {
       display: flex;
 
       align-items: center;
       justify-content: center;
 
-      transform:
-        translate(
-          -50%,
-          -50%
-        );
+      gap: 12px;
 
-      font-size: 12px;
-      font-weight: 800;
-      line-height: 1.05;
+      padding:
+        14px
+        16px;
 
-      text-align: center;
+      border-top:
+        1px solid
+        var(--border);
 
-      user-select: none;
+      background:
+        var(--panel-2);
+    }
 
-      text-shadow:
+    .navBtn {
+      display: inline-flex;
+
+      align-items: center;
+      justify-content: center;
+
+      min-width: 145px;
+      min-height: 44px;
+
+      padding:
         0
-        1px
-        2px
+        18px;
+
+      border:
+        1px solid
+        var(--border-light);
+
+      border-radius:
+        10px;
+
+      background:
+        var(--panel-3);
+
+      color:
+        var(--text);
+
+      font-size:
+        14px;
+      font-weight:
+        800;
+
+      cursor:
+        pointer;
+
+      transition:
+        background 0.15s ease,
+        border-color 0.15s ease,
+        transform 0.1s ease,
+        opacity 0.15s ease;
+    }
+
+    .navBtn:hover:not(:disabled) {
+      background:
+        #2D333B;
+
+      border-color:
+        var(--accent);
+    }
+
+    .navBtn:active:not(:disabled) {
+      transform:
+        scale(0.97);
+    }
+
+    .navBtn:disabled {
+      opacity:
+        0.35;
+
+      cursor:
+        not-allowed;
+    }
+
+    #nextBtn:not(:disabled) {
+      border-color:
         rgba(
-          0,
-          0,
-          0,
-          0.8
+          88,
+          166,
+          255,
+          0.55
         );
     }
 
-
-    /*
-    ==========================
-    하단 상태바
-    ==========================
-    */
+    /* =========================
+       하단 상태
+       ========================= */
 
     .info-bar {
       display: flex;
@@ -696,7 +586,6 @@
         var(--panel);
     }
 
-
     .color-result {
       display: flex;
 
@@ -706,7 +595,6 @@
 
       min-width: 0;
     }
-
 
     #colorBox {
       width: 38px;
@@ -729,11 +617,7 @@
         #2D333B;
 
       box-shadow:
-        inset
-        0
-        0
-        0
-        1px
+        inset 0 0 0 1px
         rgba(
           0,
           0,
@@ -742,11 +626,9 @@
         );
     }
 
-
     .result-text-area {
       min-width: 0;
     }
-
 
     .result-label {
       margin-bottom: 3px;
@@ -764,7 +646,6 @@
         0.7px;
     }
 
-
     #colorText {
       color:
         var(--text);
@@ -776,18 +657,15 @@
         keep-all;
     }
 
-
     #colorText.success {
       color:
         #7EE787;
     }
 
-
     #colorText.error {
       color:
         #FF7B72;
     }
-
 
     .hint {
       color:
@@ -799,15 +677,11 @@
         nowrap;
     }
 
-
-    /*
-    ==========================
-    복사 성공 애니메이션
-    ==========================
-    */
+    /* =========================
+       복사 애니메이션
+       ========================= */
 
     @keyframes copyFlash {
-
       0% {
         transform:
           scale(1);
@@ -822,9 +696,7 @@
         transform:
           scale(1);
       }
-
     }
-
 
     #colorBox.flash {
       animation:
@@ -833,12 +705,9 @@
         ease;
     }
 
-
-    /*
-    ==========================
-    모바일
-    ==========================
-    */
+    /* =========================
+       모바일
+       ========================= */
 
     @media (
       max-width: 760px
@@ -854,7 +723,6 @@
           18px;
       }
 
-
       .header {
         align-items:
           flex-start;
@@ -863,58 +731,35 @@
           16px;
       }
 
-
       .header-title h1 {
         font-size:
           24px;
       }
-
 
       .header-title p {
         font-size:
           12px;
       }
 
-
       .toolbar {
-        flex-direction:
-          column;
-
         align-items:
           stretch;
       }
 
-
-      .toolbar-left,
-      .toolbar-right {
+      .toolbar-left {
         width:
           100%;
       }
-
 
       .upload-button {
         flex:
           1;
       }
 
-
-      .mode-switch {
-        width:
-          100%;
-      }
-
-
-      .modeBtn {
-        flex:
-          1;
-      }
-
-
       .canvas-area {
         padding:
           10px;
       }
-
 
       canvas {
         width:
@@ -923,6 +768,27 @@
           );
       }
 
+      .navigation-bar {
+        gap:
+          8px;
+
+        padding:
+          10px;
+      }
+
+      .navBtn {
+        flex:
+          1;
+
+        min-width:
+          0;
+
+        padding:
+          0 8px;
+
+        font-size:
+          13px;
+      }
 
       .info-bar {
         align-items:
@@ -932,12 +798,10 @@
           column;
       }
 
-
       #colorText {
         font-size:
           13px;
       }
-
 
       .hint {
         display:
@@ -945,6 +809,7 @@
       }
 
     }
+
   </style>
 </head>
 
@@ -953,9 +818,8 @@
 
   <main class="app">
 
-
     <!-- =========================
-         상단 제목
+         제목
          ========================= -->
 
     <header class="header">
@@ -967,7 +831,7 @@
         </h1>
 
         <p>
-          이미지를 32×32 픽셀로 변환하고 색상코드를 빠르게 복사하세요.
+          원하는 픽셀을 클릭하거나 이전·다음 버튼으로 이동해 색상코드를 복사하세요.
         </p>
 
       </div>
@@ -981,7 +845,7 @@
 
 
     <!-- =========================
-         툴바
+         이미지 선택
          ========================= -->
 
     <section class="toolbar">
@@ -1015,30 +879,6 @@
 
       </div>
 
-
-      <div class="toolbar-right">
-
-        <div class="mode-switch">
-
-          <button
-            class="modeBtn active"
-            id="mode1Btn"
-          >
-            픽셀
-          </button>
-
-
-          <button
-            class="modeBtn"
-            id="mode2Btn"
-          >
-            HEX
-          </button>
-
-        </div>
-
-      </div>
-
     </section>
 
 
@@ -1055,13 +895,13 @@
 
           <span class="status-dot"></span>
 
-          CANVAS
+          PIXEL CANVAS
 
         </div>
 
 
-        <span id="modeLabel">
-          PIXEL MODE
+        <span class="pixel-badge">
+          32 × 32 PIXEL
         </span>
 
       </div>
@@ -1071,10 +911,7 @@
 
       <div class="canvas-area">
 
-        <div
-          class="canvas-wrapper"
-          id="canvasWrapper"
-        >
+        <div class="canvas-wrapper">
 
           <canvas
             id="canvas"
@@ -1082,19 +919,39 @@
             height="1024"
           ></canvas>
 
-
-          <div
-            class="hex-overlay"
-            id="hexOverlay"
-          ></div>
-
         </div>
 
       </div>
 
 
       <!-- =========================
-           결과 상태바
+           이전 / 다음
+           ========================= -->
+
+      <div class="navigation-bar">
+
+        <button
+          id="prevBtn"
+          class="navBtn"
+          disabled
+        >
+          ← 이전 픽셀
+        </button>
+
+
+        <button
+          id="nextBtn"
+          class="navBtn"
+          disabled
+        >
+          다음 픽셀 →
+        </button>
+
+      </div>
+
+
+      <!-- =========================
+           결과
            ========================= -->
 
       <div class="info-bar">
@@ -1133,11 +990,9 @@
 
   <script>
 
-    /*
-    ==========================
-    요소
-    ==========================
-    */
+    /* =========================
+       요소
+       ========================= */
 
     const fileInput =
       document.getElementById(
@@ -1157,18 +1012,6 @@
       );
 
 
-    const canvasWrapper =
-      document.getElementById(
-        "canvasWrapper"
-      );
-
-
-    const hexOverlay =
-      document.getElementById(
-        "hexOverlay"
-      );
-
-
     const colorBox =
       document.getElementById(
         "colorBox"
@@ -1181,38 +1024,34 @@
       );
 
 
-    const mode1Btn =
-      document.getElementById(
-        "mode1Btn"
-      );
-
-
-    const mode2Btn =
-      document.getElementById(
-        "mode2Btn"
-      );
-
-
-    const modeLabel =
-      document.getElementById(
-        "modeLabel"
-      );
-
-
     const uploadStatus =
       document.getElementById(
         "uploadStatus"
       );
 
 
-    /*
-    ==========================
-    기본 설정
-    ==========================
-    */
+    const prevBtn =
+      document.getElementById(
+        "prevBtn"
+      );
+
+
+    const nextBtn =
+      document.getElementById(
+        "nextBtn"
+      );
+
+
+    /* =========================
+       설정
+       ========================= */
 
     const size =
       32;
+
+
+    const totalPixels =
+      size * size;
 
 
     let pixelData =
@@ -1227,19 +1066,13 @@
       null;
 
 
-    let currentMode =
-      1;
-
-
     const imgbbApiKey =
       "3df1cfb7a65e1f0ff0062422dc0b9ab3";
 
 
-    /*
-    ==========================
-    이미지 선택
-    ==========================
-    */
+    /* =========================
+       이미지 선택
+       ========================= */
 
     fileInput.addEventListener(
       "change",
@@ -1262,11 +1095,9 @@
           "업로드 중...";
 
 
-        /*
-        ==========================
-        ImgBB 업로드
-        ==========================
-        */
+        /* =========================
+           ImgBB 업로드
+           ========================= */
 
         const formData =
           new FormData();
@@ -1290,8 +1121,8 @@
         )
 
         .then(
-          res =>
-            res.json()
+          response =>
+            response.json()
         )
 
         .then(
@@ -1302,7 +1133,7 @@
             ) {
 
               console.log(
-                "업로드 URL:",
+                "ImgBB 업로드 URL:",
                 data.data.url
               );
 
@@ -1323,7 +1154,7 @@
 
 
               uploadStatus.textContent =
-                "● 업로드 실패";
+                "● ImgBB 업로드 실패";
 
             }
 
@@ -1331,11 +1162,11 @@
         )
 
         .catch(
-          err => {
+          error => {
 
             console.error(
-              "업로드 실패:",
-              err
+              "ImgBB 업로드 실패:",
+              error
             );
 
 
@@ -1344,17 +1175,15 @@
 
 
             uploadStatus.textContent =
-              "● 업로드 실패";
+              "● ImgBB 업로드 실패";
 
           }
         );
 
 
-        /*
-        ==========================
-        로컬 이미지 로드
-        ==========================
-        */
+        /* =========================
+           로컬 이미지 로드
+           ========================= */
 
         const img =
           new Image();
@@ -1372,7 +1201,6 @@
 
         img.onload =
           function() {
-
 
             currentImg =
               img;
@@ -1392,21 +1220,17 @@
               size;
 
 
-            const tctx =
+            const tempCtx =
               tempCanvas.getContext(
                 "2d"
               );
 
 
-            tctx.imageSmoothingEnabled =
+            tempCtx.imageSmoothingEnabled =
               false;
 
 
-            /*
-            32 x 32로 축소
-            */
-
-            tctx.drawImage(
+            tempCtx.drawImage(
               img,
               0,
               0,
@@ -1416,7 +1240,7 @@
 
 
             pixelData =
-              tctx.getImageData(
+              tempCtx.getImageData(
                 0,
                 0,
                 size,
@@ -1428,12 +1252,15 @@
               null;
 
 
+            updateNavigationButtons();
+
+
             colorText.className =
               "";
 
 
             colorText.textContent =
-              "픽셀을 클릭하면 색상코드가 복사됩니다.";
+              "픽셀을 클릭하면 해당 색상코드가 복사됩니다.";
 
 
             drawMainCanvas();
@@ -1449,11 +1276,9 @@
     );
 
 
-    /*
-    ==========================
-    RGB → HEX
-    ==========================
-    */
+    /* =========================
+       RGB → HEX
+       ========================= */
 
     function rgbToHex(
       r,
@@ -1483,19 +1308,13 @@
     }
 
 
-    /*
-    ==========================
-    클립보드 복사
-    ==========================
-    */
+    /* =========================
+       클립보드 복사
+       ========================= */
 
     async function copyToClipboard(
       text
     ) {
-
-      /*
-      Clipboard API
-      */
 
       if (
         navigator.clipboard &&
@@ -1526,10 +1345,6 @@
 
       }
 
-
-      /*
-      대체 방식
-      */
 
       try {
 
@@ -1610,11 +1425,9 @@
     }
 
 
-    /*
-    ==========================
-    메인 캔버스
-    ==========================
-    */
+    /* =========================
+       캔버스 그리기
+       ========================= */
 
     function drawMainCanvas() {
 
@@ -1642,17 +1455,17 @@
         size;
 
 
-      const tctx =
+      const tempCtx =
         tempCanvas.getContext(
           "2d"
         );
 
 
-      tctx.imageSmoothingEnabled =
+      tempCtx.imageSmoothingEnabled =
         false;
 
 
-      tctx.drawImage(
+      tempCtx.drawImage(
         currentImg,
         0,
         0,
@@ -1682,16 +1495,11 @@
       );
 
 
-      hexOverlay.innerHTML =
-        "";
-
-
-      /*
-      픽셀 모드 선택 테두리
-      */
+      /* =========================
+         선택 픽셀 테두리
+         ========================= */
 
       if (
-        currentMode === 1 &&
         selectedPixel
       ) {
 
@@ -1706,11 +1514,11 @@
 
 
         /*
-        바깥쪽 검은색 테두리
+        검은 외곽선
         */
 
         ctx.strokeStyle =
-          "rgba(0,0,0,0.8)";
+          "rgba(0, 0, 0, 0.9)";
 
 
         ctx.lineWidth =
@@ -1718,7 +1526,6 @@
 
 
         ctx.strokeRect(
-
           selectedPixel.x *
           cellWidth,
 
@@ -1728,12 +1535,11 @@
           cellWidth,
 
           cellHeight
-
         );
 
 
         /*
-        안쪽 밝은 테두리
+        파란 테두리
         */
 
         ctx.strokeStyle =
@@ -1745,7 +1551,6 @@
 
 
         ctx.strokeRect(
-
           selectedPixel.x *
           cellWidth,
 
@@ -1755,213 +1560,80 @@
           cellWidth,
 
           cellHeight
-
         );
-
-      }
-
-
-      /*
-      HEX 모드
-      */
-
-      if (
-        currentMode === 2
-      ) {
-
-        drawAllHexOverlay();
 
       }
 
     }
 
 
-    /*
-    ==========================
-    HEX 오버레이
-    ==========================
-    */
+    /* =========================
+       현재 선택된 픽셀 번호
+       0 ~ 1023
+       ========================= */
 
-    function drawAllHexOverlay() {
+    function getSelectedIndex() {
 
       if (
-        !pixelData
+        !selectedPixel
       ) {
+
+        return -1;
+
+      }
+
+
+      return (
+        selectedPixel.y *
+        size +
+        selectedPixel.x
+      );
+
+    }
+
+
+    /* =========================
+       이전 / 다음 버튼 상태
+       ========================= */
+
+    function updateNavigationButtons() {
+
+      if (
+        !pixelData ||
+        !selectedPixel
+      ) {
+
+        prevBtn.disabled =
+          true;
+
+
+        nextBtn.disabled =
+          true;
+
 
         return;
 
       }
 
 
-      const overlayWidth =
-        hexOverlay.clientWidth;
+      const index =
+        getSelectedIndex();
 
 
-      const overlayHeight =
-        hexOverlay.clientHeight;
+      prevBtn.disabled =
+        index <= 0;
 
 
-      const cellWidth =
-        overlayWidth /
-        size;
-
-
-      const cellHeight =
-        overlayHeight /
-        size;
-
-
-      for (
-        let y = 0;
-        y < size;
-        y++
-      ) {
-
-        for (
-          let x = 0;
-          x < size;
-          x++
-        ) {
-
-          const idx =
-            (
-              y *
-              size +
-              x
-            ) * 4;
-
-
-          const r =
-            pixelData[
-              idx
-            ];
-
-
-          const g =
-            pixelData[
-              idx + 1
-            ];
-
-
-          const b =
-            pixelData[
-              idx + 2
-            ];
-
-
-          const hex =
-            rgbToHex(
-              r,
-              g,
-              b
-            );
-
-
-          const div =
-            document.createElement(
-              "div"
-            );
-
-
-          div.className =
-            "hex-cell";
-
-
-          div.innerHTML =
-            hex.slice(
-              0,
-              4
-            ) +
-            "<br>" +
-            hex.slice(
-              4
-            );
-
-
-          div.style.left =
-            `${(x + 0.5) * cellWidth}px`;
-
-
-          div.style.top =
-            `${(y + 0.5) * cellHeight}px`;
-
-
-          div.style.width =
-            `${cellWidth}px`;
-
-
-          div.style.height =
-            `${cellHeight}px`;
-
-
-          const fontSize =
-            Math.max(
-              5,
-              Math.min(
-                12,
-                cellWidth * 0.38
-              )
-            );
-
-
-          div.style.fontSize =
-            `${fontSize}px`;
-
-
-          const brightness =
-            (
-              r * 0.299 +
-              g * 0.587 +
-              b * 0.114
-            );
-
-
-          /*
-          밝은 색에서는 검은 글자
-          어두운 색에서는 흰 글자
-          */
-
-          if (
-            brightness > 150
-          ) {
-
-            div.style.color =
-              "#111827";
-
-
-            div.style.textShadow =
-              "0 1px 1px rgba(255,255,255,0.5)";
-
-          }
-
-          else {
-
-            div.style.color =
-              "#FFFFFF";
-
-
-            div.style.textShadow =
-              "0 1px 2px rgba(0,0,0,0.9)";
-
-          }
-
-
-          hexOverlay.appendChild(
-            div
-          );
-
-        }
-
-      }
+      nextBtn.disabled =
+        index >=
+        totalPixels - 1;
 
     }
 
 
-    /*
-    ==========================
-    색상 복사
-    ==========================
-    */
+    /* =========================
+       픽셀 선택 + 복사
+       ========================= */
 
     async function copyPixel(
       pixelX,
@@ -2033,19 +1705,38 @@
         );
 
 
+      /*
+      클립보드 복사
+      */
+
       const copied =
         await copyToClipboard(
           codeWithoutHash
         );
 
 
-      colorBox.style.backgroundColor =
-        hex;
+      /*
+      선택 픽셀 저장
+      */
+
+      selectedPixel = {
+
+        x:
+          pixelX,
+
+        y:
+          pixelY
+
+      };
 
 
       /*
-      복사 성공 애니메이션
+      색상 표시
       */
+
+      colorBox.style.backgroundColor =
+        hex;
+
 
       colorBox.classList.remove(
         "flash"
@@ -2061,29 +1752,21 @@
 
 
       /*
-      픽셀 모드 선택 표시
+      테두리 업데이트
       */
 
-      if (
-        currentMode === 1
-      ) {
-
-        selectedPixel = {
-          x:
-            pixelX,
-
-          y:
-            pixelY
-        };
-
-
-        drawMainCanvas();
-
-      }
+      drawMainCanvas();
 
 
       /*
-      화면 좌표는 1 ~ 32
+      이전 / 다음 버튼 상태
+      */
+
+      updateNavigationButtons();
+
+
+      /*
+      화면 좌표
       */
 
       const displayX =
@@ -2121,12 +1804,47 @@
     }
 
 
-    /*
-    ==========================
-    캔버스 클릭
-    두 모드 공통
-    ==========================
-    */
+    /* =========================
+       index로 픽셀 선택
+       ========================= */
+
+    async function copyPixelByIndex(
+      index
+    ) {
+
+      if (
+        index < 0 ||
+        index >= totalPixels
+      ) {
+
+        return;
+
+      }
+
+
+      const pixelX =
+        index %
+        size;
+
+
+      const pixelY =
+        Math.floor(
+          index /
+          size
+        );
+
+
+      await copyPixel(
+        pixelX,
+        pixelY
+      );
+
+    }
+
+
+    /* =========================
+       캔버스 클릭
+       ========================= */
 
     canvas.addEventListener(
       "click",
@@ -2192,155 +1910,73 @@
     );
 
 
-    /*
-    ==========================
-    모드 버튼 UI
-    ==========================
-    */
+    /* =========================
+       이전 픽셀
+       ========================= */
 
-    function updateModeButtons() {
-
-      mode1Btn.classList.remove(
-        "active"
-      );
-
-
-      mode2Btn.classList.remove(
-        "active"
-      );
-
-
-      if (
-        currentMode === 1
-      ) {
-
-        mode1Btn.classList.add(
-          "active"
-        );
-
-
-        modeLabel.textContent =
-          "PIXEL MODE";
-
-      }
-
-
-      if (
-        currentMode === 2
-      ) {
-
-        mode2Btn.classList.add(
-          "active"
-        );
-
-
-        modeLabel.textContent =
-          "HEX MODE";
-
-      }
-
-    }
-
-
-    /*
-    ==========================
-    픽셀 모드
-    ==========================
-    */
-
-    mode1Btn.addEventListener(
+    prevBtn.addEventListener(
       "click",
-      function() {
+      async function() {
 
-        currentMode =
-          1;
+        const currentIndex =
+          getSelectedIndex();
 
-
-        colorText.className =
-          "";
-
-
-        colorText.textContent =
-          "픽셀을 클릭하면 해당 색상코드가 복사됩니다.";
-
-
-        updateModeButtons();
-
-
-        drawMainCanvas();
-
-      }
-    );
-
-
-    /*
-    ==========================
-    HEX 모드
-    ==========================
-    */
-
-    mode2Btn.addEventListener(
-      "click",
-      function() {
-
-        currentMode =
-          2;
-
-
-        selectedPixel =
-          null;
-
-
-        colorText.className =
-          "";
-
-
-        colorText.textContent =
-          "HEX가 표시된 픽셀을 클릭하면 색상코드가 복사됩니다.";
-
-
-        updateModeButtons();
-
-
-        drawMainCanvas();
-
-      }
-    );
-
-
-    /*
-    ==========================
-    창 크기 변경 시
-    HEX 위치 다시 계산
-    ==========================
-    */
-
-    window.addEventListener(
-      "resize",
-      function() {
 
         if (
-          currentMode === 2 &&
-          pixelData
+          currentIndex <= 0
         ) {
 
-          drawMainCanvas();
+          return;
 
         }
 
+
+        await copyPixelByIndex(
+          currentIndex - 1
+        );
+
+      }
+    );
+
+
+    /* =========================
+       다음 픽셀
+       ========================= */
+
+    nextBtn.addEventListener(
+      "click",
+      async function() {
+
+        const currentIndex =
+          getSelectedIndex();
+
+
+        if (
+          currentIndex < 0 ||
+          currentIndex >=
+          totalPixels - 1
+        ) {
+
+          return;
+
+        }
+
+
+        await copyPixelByIndex(
+          currentIndex + 1
+        );
+
       }
     );
 
 
     /*
-    ==========================
-    최초 UI
-    ==========================
+    최초 버튼 상태
     */
 
-    updateModeButtons();
+    updateNavigationButtons();
 
   </script>
 
 </body>
-  </html>
+      </html>
